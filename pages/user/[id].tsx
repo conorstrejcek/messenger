@@ -116,12 +116,27 @@ function MessageInput(props: { senderId: string }) {
   );
 }
 
+const GET_USER_BY_ID = gql`
+  query GetUserById($id: ID!) {
+    user(id: $id) {
+      name
+    }
+  }
+`;
+
+interface User {
+  name: string;
+}
+
 export default function Messenger() {
   const router = useRouter();
   const { id } = router.query;
 
-  if (!id) {
-    return <p>Loading...</p>;
+  const { loading, error, data } = useQuery<{ user: User }>(GET_USER_BY_ID, {
+    variables: { id },
+    skip: !id || typeof id !== "string",
+  });
+
   }
 
   if (typeof id !== "string") {
@@ -129,7 +144,10 @@ export default function Messenger() {
   }
 
   return (
-    <main className="p-4 bg-gray-100 h-screen">
+    <main className="p-4 bg-gray-100 h-screen flex flex-col">
+      <h1 className="text-gray-800 text-2xl font-semibold text-center mb-4">
+        Sending as {data?.user.name}
+      </h1>
       <Messages senderId={id} />
       <MessageInput senderId={id} />
     </main>

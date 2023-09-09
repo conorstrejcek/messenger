@@ -19,10 +19,15 @@ export const typeDefs = gql`
   type Query {
     messages: [Message!]!
     users: [User!]!
+    user(id: ID!): User!
   }
 
   type Mutation {
-    sendMessage(text: String!, senderId: String!): Boolean!
+    sendMessage(text: String!, senderId: ID!): Boolean!
+  }
+
+  type Subscription {
+    messageAdded: Message!
   }
 `;
 
@@ -35,6 +40,11 @@ export const resolvers = {
     users: async () => {
       const users = await prisma.user.findMany();
       return users;
+    },
+    user: async (_: any, args: { id: string }) => {
+      const { id } = args;
+      const user = await prisma.user.findFirst({ where: { id } });
+      return user;
     },
   },
   Mutation: {
