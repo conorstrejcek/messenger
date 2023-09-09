@@ -26,15 +26,22 @@ const mockMessages = [
     id: "testId1",
     text: "Hello user 2!",
     timestamp: new Date("2023-09-09T12:00").toISOString(),
-    senderId: 1,
-    recipientId: 2,
+    senderId: "1",
+    recipientId: "2",
   },
   {
     id: "testId2",
-    text: "Hello user 1!",
+    text: "Hello user 1! What do you want to get for dinner tonight? I want to make this message extra long so that I can see how the frontend handles it!",
     timestamp: new Date("2023-09-09T12:05").toISOString(),
-    senderId: 2,
-    recipientId: 1,
+    senderId: "2",
+    recipientId: "1",
+  },
+  {
+    id: "testId3",
+    text: "How about 🍕?",
+    timestamp: new Date("2023-09-09T12:15").toISOString(),
+    senderId: "1",
+    recipientId: "2",
   },
 ];
 
