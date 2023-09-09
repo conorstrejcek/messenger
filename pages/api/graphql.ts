@@ -8,7 +8,6 @@ export const typeDefs = gql`
     text: String!
     timestamp: String! # ISO date string
     senderId: ID!
-    recipientId: ID!
   }
 
   type User {
@@ -19,6 +18,10 @@ export const typeDefs = gql`
   type Query {
     messages: [Message!]!
   }
+
+  type Mutation {
+    sendMessage(text: String!, senderId: String!): Boolean!
+  }
 `;
 
 const mockMessages = [
@@ -27,27 +30,30 @@ const mockMessages = [
     text: "Hello user 2!",
     timestamp: new Date("2023-09-09T12:00").toISOString(),
     senderId: "1",
-    recipientId: "2",
   },
   {
     id: "testId2",
     text: "Hello user 1! What do you want to get for dinner tonight? I want to make this message extra long so that I can see how the frontend handles it!",
     timestamp: new Date("2023-09-09T12:05").toISOString(),
     senderId: "2",
-    recipientId: "1",
   },
   {
     id: "testId3",
     text: "How about 🍕?",
     timestamp: new Date("2023-09-09T12:15").toISOString(),
     senderId: "1",
-    recipientId: "2",
   },
 ];
 
 export const resolvers = {
   Query: {
     messages: () => mockMessages,
+  },
+  Mutation: {
+    sendMessage: (parent: any, args: { text: string; senderId: string }) => {
+      console.log("Received message", args);
+      return true;
+    },
   },
 };
 
