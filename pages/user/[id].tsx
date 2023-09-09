@@ -1,19 +1,7 @@
 import { useRouter } from "next/router";
 
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  gql,
-  useQuery,
-  useMutation,
-} from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import { useState } from "react";
-
-const client = new ApolloClient({
-  uri: "http://localhost:3000/api/graphql",
-  cache: new InMemoryCache(),
-});
 
 const GET_MESSAGES = gql`
   query GetMessages {
@@ -138,11 +126,9 @@ export default function Messenger() {
   }
 
   return (
-    <ApolloProvider client={client}>
-      <main className="p-4 bg-gray-100 h-screen">
-        <Messages senderId={id} />
-        <MessageInput senderId={id} />
-      </main>
-    </ApolloProvider>
+    <main className="p-4 bg-gray-100 h-screen">
+      <Messages senderId={id} />
+      <MessageInput senderId={id} />
+    </main>
   );
 }
