@@ -46,6 +46,7 @@ function MessageBubble(props: {
 function Messages(props: { senderId: string }) {
   const { loading, error, data } = useQuery<{ messages: Message[] }>(
     GET_MESSAGES,
+    { pollInterval: 500 },
   );
 
   if (loading) return <p>Loading...</p>;
@@ -54,7 +55,7 @@ function Messages(props: { senderId: string }) {
   const messages = data?.messages ?? [];
 
   return (
-    <div className="max-w-lg mx-auto bg-white p-4 rounded shadow">
+    <div className="mx-auto bg-white p-4 rounded shadow flex-1 flex-col overflow-y-auto">
       {messages.length === 0 ? (
         <p className="text-gray-400 text-md text-center">No messages yet!</p>
       ) : null}
@@ -71,7 +72,7 @@ function Messages(props: { senderId: string }) {
 }
 
 const SEND_MESSAGE = gql`
-  mutation SendMessage($text: String!, $senderId: String!) {
+  mutation SendMessage($text: String!, $senderId: ID!) {
     sendMessage(text: $text, senderId: $senderId)
   }
 `;
@@ -99,19 +100,21 @@ function MessageInput(props: { senderId: string }) {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 p-4 bg-white shadow-lg flex items-center">
-      <textarea
-        className="flex-grow border p-2 rounded mr-2 text-gray-800"
-        placeholder="Type your message..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
-      <button
-        onClick={sendMessage}
-        className="bg-blue-500 text-white p-2 rounded"
-      >
-        Send
-      </button>
+    <div className="mt-4">
+      <div className="left-0 right-0 p-4 bg-white shadow-lg flex items-center mx-auto">
+        <textarea
+          className="flex-grow border p-2 rounded mr-2 text-gray-800"
+          placeholder="Type your message..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <button
+          onClick={sendMessage}
+          className="bg-blue-500 text-white p-2 rounded"
+        >
+          Send
+        </button>
+      </div>
     </div>
   );
 }
@@ -137,7 +140,10 @@ export default function Messenger() {
     skip: !id || typeof id !== "string",
   });
 
+  if (!id || loading) {
+    return <p>Loading...</p>;
   }
+  if (error) return <p>Error: {error.message}</p>;
 
   if (typeof id !== "string") {
     return <p>URL must include a single user id (e.g. /user/1)</p>;
