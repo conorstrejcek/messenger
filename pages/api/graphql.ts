@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { gql } from "graphql-tag";
+import prisma from "../../lib/db";
 
 export const typeDefs = gql`
   type Message {
@@ -17,6 +18,7 @@ export const typeDefs = gql`
 
   type Query {
     messages: [Message!]!
+    users: [User!]!
   }
 
   type Mutation {
@@ -24,34 +26,23 @@ export const typeDefs = gql`
   }
 `;
 
-const mockMessages = [
-  {
-    id: "testId1",
-    text: "Hello user 2!",
-    timestamp: new Date("2023-09-09T12:00").toISOString(),
-    senderId: "1",
-  },
-  {
-    id: "testId2",
-    text: "Hello user 1! What do you want to get for dinner tonight? I want to make this message extra long so that I can see how the frontend handles it!",
-    timestamp: new Date("2023-09-09T12:05").toISOString(),
-    senderId: "2",
-  },
-  {
-    id: "testId3",
-    text: "How about 🍕?",
-    timestamp: new Date("2023-09-09T12:15").toISOString(),
-    senderId: "1",
-  },
-];
-
 export const resolvers = {
   Query: {
-    messages: () => mockMessages,
+    messages: async () => {
+      const messages = await prisma.message.findMany();
+      return messages;
+    },
+    users: async () => {
+      const users = await prisma.user.findMany();
+      return users;
+    },
   },
   Mutation: {
-    sendMessage: (parent: any, args: { text: string; senderId: string }) => {
-      console.log("Received message", args);
+    sendMessage: async (
+      parent: any,
+      args: { text: string; senderId: string }
+    ) => {
+      await prisma.message.create({ data: args });
       return true;
     },
   },

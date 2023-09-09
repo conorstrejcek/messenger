@@ -37,7 +37,7 @@ function MessageBubble(props: {
         <p className="text-gray-800 text-md">{text}</p>
       </div>
       <p className={`text-gray-600 text-xs mt-1 block`}>
-        {new Date(timestamp).toLocaleTimeString()}
+        {new Date(parseInt(timestamp, 10)).toLocaleTimeString()}
       </p>
     </div>
   );
@@ -55,6 +55,9 @@ function Messages(props: { senderId: string }) {
 
   return (
     <div className="max-w-lg mx-auto bg-white p-4 rounded shadow">
+      {messages.length === 0 ? (
+        <p className="text-gray-400 text-md text-center">No messages yet!</p>
+      ) : null}
       {messages.map(({ id, text, timestamp, senderId }) => (
         <MessageBubble
           key={id}
