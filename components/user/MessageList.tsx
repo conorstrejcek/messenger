@@ -34,7 +34,7 @@ function MessageBubble(props: {
         <p className="text-gray-800 text-md">{text}</p>
       </div>
       <p className={`text-gray-600 text-xs mt-1 block`}>
-        {new Date(parseInt(timestamp, 10)).toLocaleTimeString()}
+        {new Date(timestamp).toLocaleString()}
       </p>
     </div>
   );

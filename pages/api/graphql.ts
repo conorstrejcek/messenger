@@ -2,6 +2,7 @@ import { ApolloServer } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { gql } from "graphql-tag";
 import prisma from "../../lib/db";
+import { Message } from "@prisma/client";
 
 export const typeDefs = gql`
   type Message {
@@ -31,11 +32,21 @@ export const typeDefs = gql`
   }
 `;
 
+/**
+ * Prisma outputs date objects, so we'll convert them to strings before sending them to the client
+ */
+function formatMessageFromPrisma(message: Message) {
+  return {
+    ...message,
+    timestamp: message.timestamp.toISOString(),
+  };
+}
+
 export const resolvers = {
   Query: {
     messages: async () => {
       const messages = await prisma.message.findMany();
-      return messages;
+      return messages.map(formatMessageFromPrisma);
     },
     users: async () => {
       const users = await prisma.user.findMany();
