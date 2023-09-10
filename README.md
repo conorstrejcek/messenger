@@ -1,38 +1,69 @@
+# Messenger
+
+A demo app which allows two users to send messages to each other.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
+
+    ```bash
+    npm i
+    ```
+
+2. Initialize the SQLite database file:
+
+    ```bash
+    npm run initialize-db
+    ```
+
+    This script will create the database file, and seed it with two users.
+
+3. Run the development server:
+
+    ```bash
+    npm run dev
+    ```
+
+4. Open [http://localhost:3000](http://localhost:3000) with your browser.
+
+You can select which user you would like to send as by clicking one of the buttons on the home page. If you would like to test sending and receiving, you can open the application in another tab or window, and select the other user. From the next page, you can send and receive messages using the input at the bottom of the page.
+
+## Project Architecture
+
+| Component                 | Technology       |
+|---------------------------|------------------|
+| Application Framework     | Next.js          |
+| UI Library                | React            |
+| Styling Framework         | Tailwind CSS     |
+| GraphQL Client            | Apollo Client    |
+| ORM                       | Prisma           |
+| Database                  | sqlite           |
+
+| Main Files                                                 | Description                                    |
+|------------------------------------------------------------|------------------------------------------------|
+| [`pages/api/graphql.ts`](./pages/api/graphql.ts)           | Contains the GraphQL API                       |
+| [`pages/index.tsx`](./pages/index.tsx)                     | Home page for user selection                   |
+| [`pages/user/[id].tsx`](./pages/user/[id].tsx)             | Page for sending and receiving user messages   |
+| Components in [`components/user`](./components/user)       | Components specific to sending/receiving page  |
+
+## Known issues
+
+In development mode, you may sometimes come across this error:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+Error: Ensure bailed, found path does not match ensure type (pages/app)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This is a problem in the Next.js which is currently being fixed.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+See: <https://github.com/vercel/next.js/issues/53837>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Future Enhancements
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+If this were a real project, there are several enhancements which I would prioritize:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Server-side validation of client-supplied arguments to GraphQL endpoints
+2. Generate types from GraphQL schema instead of manually updating them, using a package like [GraphQL Code Generator](https://github.com/dotansimha/graphql-code-generator)
+3. Implement GraphQL Subscriptions for realtime messages using WebSockets
