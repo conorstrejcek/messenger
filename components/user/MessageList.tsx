@@ -27,11 +27,14 @@ function MessageBubble(props: {
   return (
     <div className={`pb-2 mb-2 ${isSender ? "text-right" : "text-left"}`}>
       <div
-        className={`inline-block p-3 rounded-lg ${
+        className={`inline-block p-3 rounded-lg max-w-full ${
           isSender ? "bg-gray-200" : "bg-blue-200"
-        } ${isSender ? "ml-20" : "mr-20"}`}
+        }`}
+        style={{ maxWidth: "calc(100% - 5rem)" }}
       >
-        <p className="text-gray-800 text-md whitespace-pre-line">{text}</p>
+        <p className="text-gray-800 text-md whitespace-pre-line break-words text-left">
+          {text}
+        </p>
       </div>
       <p className={`text-gray-600 text-xs mt-1 block`}>
         {new Date(timestamp).toLocaleString()}
