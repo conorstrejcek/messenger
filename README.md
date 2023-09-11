@@ -48,7 +48,7 @@ You can select which user you would like to send as by clicking one of the butto
 | [`pages/user/[id].tsx`](./pages/user/[id].tsx)             | Page for sending and receiving user messages   |
 | Components in [`components/user`](./components/user)       | Components specific to sending/receiving page  |
 
-## Known issues
+## Known Issues
 
 In development mode, you may sometimes come across this error:
 
@@ -67,3 +67,4 @@ If this were a real project, there are several enhancements which I would priori
 1. Server-side validation of client-supplied arguments to GraphQL endpoints
 2. Generate types from GraphQL schema instead of manually updating them, using a package like [GraphQL Code Generator](https://github.com/dotansimha/graphql-code-generator)
 3. Implement GraphQL Subscriptions for realtime messages using WebSockets
+4. Migrate to a more scalable database like PostgreSQL
