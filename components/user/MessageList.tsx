@@ -31,7 +31,7 @@ function MessageBubble(props: {
           isSender ? "bg-gray-200" : "bg-blue-200"
         } ${isSender ? "ml-20" : "mr-20"}`}
       >
-        <p className="text-gray-800 text-md">{text}</p>
+        <p className="text-gray-800 text-md whitespace-pre-line">{text}</p>
       </div>
       <p className={`text-gray-600 text-xs mt-1 block`}>
         {new Date(timestamp).toLocaleString()}
