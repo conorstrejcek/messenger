@@ -52,7 +52,7 @@ export function MessageList(props: { senderId: string }) {
   const messages = data?.messages ?? [];
 
   return (
-    <div className="mx-auto bg-white p-4 rounded shadow flex-1 flex-col overflow-y-auto">
+    <div className="bg-white p-4 rounded shadow flex-1 flex-col overflow-y-auto">
       {messages.length === 0 ? (
         <p className="text-gray-400 text-md text-center">No messages yet!</p>
       ) : null}
